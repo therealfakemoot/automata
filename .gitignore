@@ -1,0 +1,11 @@
+# Hugo artifacts
+*.lock
+resources/
+public/
+
+# Makefile artifacts
+dist/
+reports/
+
+# Bazel artifacts
+bazel-*
