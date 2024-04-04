@@ -14,9 +14,7 @@ type Grid struct {
 
 func (g *Grid) Wrap(x, y int) (int, int) {
 	modularX := x % g.Width
-	log.Printf("modularX:  %d mod %d = %d\n", x, g.Width, modularX)
 	modularY := y % g.Height
-	log.Printf("modularY: %d mod %d = %d\n", y, g.Height, modularY)
 	return modularX, modularY
 }
 

@@ -22,12 +22,12 @@ func Test_1DTorusCoordinates(t *testing.T) {
 		{
 			name: "top",
 			inX:  0,
-			inY:  +1,
+			inY:  1,
 			outX: 0,
 			outY: 0,
 		},
 		{
-			name: "top-left",
+			name: "top-right",
 			inX:  1,
 			inY:  1,
 			outX: 1,
@@ -76,7 +76,9 @@ func Test_1DTorusCoordinates(t *testing.T) {
 			outY: 0,
 		},
 	}
+
 	// this test case uses a 1d plane 10 units wide and 1 unit tall (duh)
+	// test cases are centered on (0,0)
 	g := automata.NewGrid(10, 1, automata.SeedConstant(0))
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
