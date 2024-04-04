@@ -22,12 +22,12 @@ type Cell struct {
 
 type RuleEngineSystem struct {
 	Rule Rule
-	Grid []Cell
+	Grid Grid
 }
 
 func (res *RuleEngineSystem) Update(dt float32) {
-	for idx, c := range res.Grid {
-		res.Grid[idx] = res.Rule.Apply(c)
+	for idx, c := range res.Grid.Cells {
+		res.Grid.Cells[idx] = res.Rule.Apply(c)
 		fmt.Printf("%d", c.State)
 	}
 	fmt.Printf("\n")
@@ -38,12 +38,12 @@ func (res *RuleEngineSystem) Remove(e ecs.BasicEntity) {}
 func (res *RuleEngineSystem) Priority() int { return 0 }
 
 type TerminalRenderSystem struct {
-	Grid  []Cell
+	Grid  Grid
 	Width int
 }
 
 func (trs *TerminalRenderSystem) Update(dt float32) {
-	for _, c := range trs.Grid {
+	for _, c := range trs.Grid.Cells {
 		fmt.Printf("%d", c.State)
 	}
 	fmt.Printf("\n")
