@@ -4,11 +4,15 @@ import (
 	"log"
 )
 
+type Rule interface {
+	Apply(int, int) Cell
+}
+
 type Rule30 struct {
 	*Grid
 }
 
-func (r *Rule30) Apply(source Cell) Cell {
+func (r *Rule30) Apply(x, y int) Cell {
 	log.Printf("%#v\n", r)
 
 	var (
@@ -54,7 +58,8 @@ func (r *Rule30) Apply(source Cell) Cell {
 		}
 	)
 
-	neighbors := r.Neighbors(source.X, source.Y)
+	source := r.Get(x, y)
+	neighbors := r.Neighbors(x, y)
 	switch {
 	case neighbors == case1:
 		source.State = 0

@@ -58,25 +58,14 @@ func (g *Grid) Neighbors(x, y int) [9]int {
 	return neighbors
 }
 
-func NewGrid(x, y int, seed GridSeeder) Grid {
+func NewGrid(width, height int, seed GridSeeder) Grid {
 	var g Grid
-	grid := make([][]Cell, y)
-	for i := 0; i < x; i++ {
-		row := make([]Cell, x)
-		grid[i] = row
-		for j := 0; j < y; j++ {
-			c := Cell{}
-			c.X = i
-			c.Y = j
-			grid[j][i] = c
-		}
-	}
-	g.cells = grid
-	g.Width = x
-	g.Height = y
-	return seed(g)
-}
+	g.Width = width
+	g.Height = height
 
-type Rule interface {
-	Apply(Cell) Cell
+	cells := make([][]Cell, height)
+	for y := 0; y < height; y++ {
+		cells[y] = make([]Cell, width)
+	}
+	return seed(g)
 }

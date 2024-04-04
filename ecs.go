@@ -2,8 +2,6 @@ package automata
 
 import (
 	"fmt"
-
-	"github.com/EngoEngine/ecs"
 )
 
 type XYComponent struct {
@@ -15,8 +13,6 @@ type AutomataComponent struct {
 }
 
 type Cell struct {
-	ecs.BasicEntity
-	XYComponent
 	AutomataComponent
 }
 
@@ -33,8 +29,6 @@ func (res *RuleEngineSystem) Update(dt float32) {
 	}
 }
 
-func (res *RuleEngineSystem) Remove(e ecs.BasicEntity) {}
-
 func (res *RuleEngineSystem) Priority() int { return 0 }
 
 type TerminalRenderSystem struct {
@@ -48,7 +42,5 @@ func (trs *TerminalRenderSystem) Update(dt float32) {
 	}
 	fmt.Printf("\n")
 }
-
-func (tr *TerminalRenderSystem) Remove(e ecs.BasicEntity) {}
 
 func (tr *TerminalRenderSystem) Priority() int { return -1 }
