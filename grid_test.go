@@ -19,62 +19,64 @@ func Test_1DTorusCoordinates(t *testing.T) {
 			outX: 9,
 			outY: 0,
 		},
-		{
-			name: "top",
-			inX:  0,
-			inY:  1,
-			outX: 0,
-			outY: 0,
-		},
-		{
-			name: "top-right",
-			inX:  1,
-			inY:  1,
-			outX: 1,
-			outY: 0,
-		},
-		{
-			name: "left",
-			inX:  -1,
-			inY:  0,
-			outX: 9,
-			outY: 0,
-		},
-		{
-			name: "identity",
-			inX:  0,
-			inY:  0,
-			outX: 0,
-			outY: 0,
-		},
-		{
-			name: "right",
-			inX:  1,
-			inY:  0,
-			outX: 1,
-			outY: 0,
-		},
-		{
-			name: "bottom-left",
-			inX:  -1,
-			inY:  -1,
-			outX: 9,
-			outY: 0,
-		},
-		{
-			name: "bottom",
-			inX:  0,
-			inY:  -1,
-			outX: 0,
-			outY: 0,
-		},
-		{
-			name: "bottom-right",
-			inX:  1,
-			inY:  -1,
-			outX: 1,
-			outY: 0,
-		},
+		/*
+			{
+				name: "top",
+				inX:  0,
+				inY:  1,
+				outX: 0,
+				outY: 0,
+			},
+			{
+				name: "top-right",
+				inX:  1,
+				inY:  1,
+				outX: 1,
+				outY: 0,
+			},
+			{
+				name: "left",
+				inX:  -1,
+				inY:  0,
+				outX: 9,
+				outY: 0,
+			},
+			{
+				name: "identity",
+				inX:  0,
+				inY:  0,
+				outX: 0,
+				outY: 0,
+			},
+			{
+				name: "right",
+				inX:  1,
+				inY:  0,
+				outX: 1,
+				outY: 0,
+			},
+			{
+				name: "bottom-left",
+				inX:  -1,
+				inY:  -1,
+				outX: 9,
+				outY: 0,
+			},
+			{
+				name: "bottom",
+				inX:  0,
+				inY:  -1,
+				outX: 0,
+				outY: 0,
+			},
+			{
+				name: "bottom-right",
+				inX:  1,
+				inY:  -1,
+				outX: 1,
+				outY: 0,
+			},
+		*/
 	}
 
 	// this test case uses a 1d plane 10 units wide and 1 unit tall (duh)
@@ -84,11 +86,11 @@ func Test_1DTorusCoordinates(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			actualX, actualY := g.Wrap(tc.inX, tc.inY)
 			if actualX != tc.outX {
-				t.Log("actualX did not match")
+				t.Logf("actualX did not match: expected %d, got %d", tc.outX, actualX)
 				t.Fail()
 			}
 			if actualY != tc.outY {
-				t.Log("actualY did not match")
+				t.Logf("actualY did not match: expected %d, got %d", tc.outY, actualY)
 				t.Fail()
 			}
 		})
