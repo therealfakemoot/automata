@@ -1,73 +1,79 @@
 package automata
 
 import (
-	// "log"
-	"math"
-	"math/rand"
+	"log"
 )
-
-type GridSeeder func(Grid) Grid
-
-func SeedIdentity(grid Grid) Grid {
-	return grid
-}
-
-func SeedConstant(c int) GridSeeder {
-	return func(grid Grid) Grid {
-		for idx := range grid.Cells {
-			grid.Cells[idx].State = c
-		}
-		return grid
-	}
-}
-
-func SeedRandom(x float64) GridSeeder {
-	return func(grid Grid) Grid {
-		for idx := range grid.Cells {
-			grid.Cells[idx].X = idx
-			if rand.Float64() >= x {
-				grid.Cells[idx].State = 1
-			}
-		}
-		return grid
-	}
-}
-
-type Grid struct {
-	Cells []Cell
-	Width int
-}
 
 type Neighborhood [9]int
 
+type Grid struct {
+	cells         [][]Cell
+	left, right   [][]Cell
+	Width, Height int
+}
+
+func (g *Grid) Wrap(x, y int) (int, int) {
+	modularX := x % g.Width
+	log.Printf("modularX:  %d mod %d = %d\n", x, g.Width, modularX)
+	modularY := y % g.Height
+	log.Printf("modularY: %d mod %d = %d\n", y, g.Height, modularY)
+	return modularX, modularY
+}
+
+func (g *Grid) Get(x, y int) Cell {
+	log.Printf("getting cell for (%d, %d)\n", x, y)
+	modularX, modularY := g.Wrap(x, y)
+	return g.cells[modularY][modularX]
+}
+
+func (g *Grid) Set(x, y int, c Cell) {
+	g.cells[y][x] = c
+}
+
+func (g *Grid) Cells() []Cell {
+	var cells []Cell
+	cells = make([]Cell, 0)
+	for x := 0; x < g.Width; x++ {
+		for y := 0; y < g.Width; y++ {
+			cells = append(cells, g.cells[y][x])
+		}
+	}
+	return cells
+}
+
 func (g *Grid) Neighbors(x, y int) [9]int {
 	var neighbors [9]int
+	log.Printf("getting neighbors for (%d,%d)\n", x, y)
 
-	neighbors[0] = g.Cells[((x-1)*g.Width)+(y+1)].State
-	neighbors[1] = g.Cells[((x)*g.Width)+(y+1)].State
-	neighbors[2] = g.Cells[((x+1)*g.Width)+(y+1)].State
-	neighbors[3] = g.Cells[((x-1)*g.Width)+(y)].State
-	neighbors[4] = g.Cells[((x)*g.Width)+(y)].State
-	neighbors[5] = g.Cells[((x+1)*g.Width)+(y)].State
-	neighbors[6] = g.Cells[((x-1)*g.Width)+(y-1)].State
-	neighbors[7] = g.Cells[((x)*g.Width)+(y-1)].State
-	neighbors[8] = g.Cells[((x+1)*g.Width)+(y-1)].State
+	neighbors[0] = g.Get(x-1, y+1).State
+	neighbors[1] = g.Get(x, y+1).State
+	neighbors[2] = g.Get(x+1, y+1).State
+	neighbors[3] = g.Get(x-1, y).State
+	neighbors[4] = g.Get(x, y).State
+	neighbors[5] = g.Get(x+1, y).State
+	neighbors[6] = g.Get(x-1, y-1).State
+	neighbors[7] = g.Get(x, y-1).State
+	neighbors[8] = g.Get(x+1, y-1).State
 
 	return neighbors
 }
 
 func NewGrid(x, y int, seed GridSeeder) Grid {
 	var g Grid
-	gridLen := int(math.Max(float64(x)*float64(y), float64(x)))
-	grid := make([]Cell, gridLen)
+	grid := make([][]Cell, y)
 	for i := 0; i < x; i++ {
+		row := make([]Cell, x)
+		grid[i] = row
 		for j := 0; j < y; j++ {
-			unwrappedIdx := (i * x) + j
-			grid[unwrappedIdx].X = i
-			grid[unwrappedIdx].Y = i
+			c := Cell{}
+			c.X = i
+			c.Y = j
+			grid[j][i] = c
 		}
 	}
-	g.Cells = grid
+	g.cells = grid
+	g.Width = x
+	g.Height = y
 	return seed(g)
 }
 
