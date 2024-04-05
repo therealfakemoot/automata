@@ -42,9 +42,11 @@ func (g *Grid) Neighbors(x, y int) [9]int {
 	neighbors[0] = g.Get(x-1, y+1).State
 	neighbors[1] = g.Get(x, y+1).State
 	neighbors[2] = g.Get(x+1, y+1).State
+
 	neighbors[3] = g.Get(x-1, y).State
 	neighbors[4] = g.Get(x, y).State
 	neighbors[5] = g.Get(x+1, y).State
+
 	neighbors[6] = g.Get(x-1, y-1).State
 	neighbors[7] = g.Get(x, y-1).State
 	neighbors[8] = g.Get(x+1, y-1).State

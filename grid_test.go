@@ -3,6 +3,8 @@ package automata_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/therealfakemoot/automata"
 )
 
@@ -91,6 +93,66 @@ func Test_1DTorusCoordinates(t *testing.T) {
 				t.Logf("actualY did not match: expected %d, got %d", tc.outY, actualY)
 				t.Fail()
 			}
+		})
+	}
+}
+
+func Test_GridNeighors(t *testing.T) {
+	grid := automata.NewGrid(
+		10, 1,
+		automata.SeedCenter,
+	)
+	cases := []struct {
+		name     string
+		x, y     int
+		expected [9]int
+	}{
+		{
+			name: "origin",
+			x:    0,
+			y:    0,
+			expected: [9]int{
+				0, 0, 0,
+				0, 0, 0,
+				0, 0, 0,
+			},
+		},
+		{
+			name: "seed",
+			x:    5,
+			y:    0,
+			expected: [9]int{
+				0, 1, 0,
+				0, 1, 0,
+				0, 1, 0,
+			},
+		},
+		{
+			name: "left-of-seed",
+			x:    4,
+			y:    0,
+			expected: [9]int{
+				0, 0, 1,
+				0, 0, 1,
+				0, 0, 1,
+			},
+		},
+		{
+			name: "right-of-seed",
+			x:    6,
+			y:    0,
+			expected: [9]int{
+				1, 0, 0,
+				1, 0, 0,
+				1, 0, 0,
+			},
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			neighbors := grid.Neighbors(tc.x, tc.y)
+			assert.EqualValues(t, neighbors, tc.expected)
 		})
 	}
 }

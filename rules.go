@@ -1,9 +1,5 @@
 package automata
 
-import (
-	"log"
-)
-
 type Rule interface {
 	Apply(int, int) Cell
 }
@@ -13,8 +9,6 @@ type Rule30 struct {
 }
 
 func (r *Rule30) Apply(x, y int) Cell {
-	log.Printf("%#v\n", r)
-
 	var (
 		case1 = [9]int{
 			0, 0, 0,
@@ -58,26 +52,26 @@ func (r *Rule30) Apply(x, y int) Cell {
 		}
 	)
 
-	source := r.Get(x, y)
+	cell := Cell{}
 	neighbors := r.Neighbors(x, y)
 	switch {
 	case neighbors == case1:
-		source.State = 0
+		cell.State = 0
 	case neighbors == case2:
-		source.State = 0
+		cell.State = 0
 	case neighbors == case3:
-		source.State = 0
+		cell.State = 0
 	case neighbors == case4:
-		source.State = 1
+		cell.State = 1
 	case neighbors == case5:
-		source.State = 1
+		cell.State = 1
 	case neighbors == case6:
-		source.State = 1
+		cell.State = 1
 	case neighbors == case7:
-		source.State = 1
+		cell.State = 1
 	case neighbors == case8:
-		source.State = 0
+		cell.State = 0
 	}
 
-	return source
+	return cell
 }
