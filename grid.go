@@ -4,6 +4,10 @@ import (
 	"log"
 )
 
+func mod(a, b int) int {
+	return (a%b + b) % b
+}
+
 type Neighborhood [9]int
 
 type Grid struct {
@@ -13,9 +17,9 @@ type Grid struct {
 }
 
 func (g *Grid) Wrap(x, y int) (int, int) {
-	modularX := x % g.Width
+	modularX := mod(x, g.Width)
 	log.Printf("modularX(%d) = %d mod %d", modularX, x, g.Width)
-	modularY := y % g.Height
+	modularY := mod(y, g.Height)
 	log.Printf("modularY(%d) = %d mod %d", modularY, y, g.Height)
 	return modularX, modularY
 }
