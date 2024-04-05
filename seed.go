@@ -11,30 +11,33 @@ func SeedIdentity(grid Grid) Grid {
 }
 
 func SeedCenter(grid Grid) Grid {
-	grid.cells[len(grid.cells)/2][len(grid.cells)/2].State = 1
+	grid.right[0][grid.Width/2].State = 1
+	grid.left, grid.right = grid.right, grid.left
 	return grid
 }
 
 func SeedConstant(c int) GridSeeder {
 	return func(grid Grid) Grid {
-		for y, row := range grid.cells {
+		for y, row := range grid.left {
 			for x := range row {
-				grid.cells[y][x].State = c
+				grid.right[y][x].State = c
 			}
 		}
+		grid.left, grid.right = grid.right, grid.left
 		return grid
 	}
 }
 
 func SeedRandom(seed float64) GridSeeder {
 	return func(grid Grid) Grid {
-		for y, row := range grid.cells {
+		for y, row := range grid.left {
 			for x := range row {
 				if rand.Float64() >= seed {
-					grid.cells[y][x].State = 1
+					grid.right[y][x].State = 1
 				}
 			}
 		}
+		grid.left, grid.right = grid.right, grid.left
 		return grid
 	}
 }

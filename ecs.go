@@ -27,6 +27,11 @@ func (res *RuleEngineSystem) Update(dt float32) {
 			res.Grid.Set(x, y, res.Grid.Get(x, y))
 		}
 	}
+	res.Grid.left, res.Grid.right = res.Grid.right, res.Grid.left
+	for _, c := range res.Grid.Cells() {
+		fmt.Printf("%d", c.State)
+	}
+	fmt.Printf("\n")
 }
 
 func (res *RuleEngineSystem) Priority() int { return 0 }
