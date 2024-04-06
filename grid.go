@@ -29,6 +29,7 @@ func (n Neighborhood) String() string {
 type Grid struct {
 	left, right   [][]Cell
 	Width, Height int
+	Generation    int
 }
 
 func (g *Grid) String() string {
@@ -99,6 +100,7 @@ func (g *Grid) Update(rule Rule) {
 		}
 	}
 	copy(g.left, g.right)
+	g.Generation++
 }
 
 func newGrid(w, h int) [][]Cell {
