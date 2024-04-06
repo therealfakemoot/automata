@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"time"
-	// "fmt"
 
 	"github.com/therealfakemoot/automata"
 )
@@ -18,19 +18,11 @@ func main() {
 
 	flag.Parse()
 
-	trs := automata.TerminalRenderSystem{
-		Width: width,
-	}
 	g := automata.NewGrid(width, height, automata.SeedCenter)
-	trs.Grid = &g
-
-	ruleSystem := automata.RuleEngineSystem{
-		Grid: trs.Grid,
-		Rule: &automata.Rule30{trs.Grid},
-	}
 
 	t := time.Tick(sleep)
 	for range t {
-		ruleSystem.Update(1)
+		fmt.Printf("%s", g.String())
+		g.Update(automata.Rule30)
 	}
 }
