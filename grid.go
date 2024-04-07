@@ -3,6 +3,9 @@ package automata
 import (
 	"fmt"
 	"strings"
+
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type Cell int
@@ -30,6 +33,7 @@ type Grid struct {
 	left, right   [][]Cell
 	Width, Height int
 	Generation    int
+	Logger        *zap.Logger
 }
 
 func (g *Grid) String() string {
@@ -95,8 +99,7 @@ func (g *Grid) Neighbors(x, y int) Neighborhood {
 func (g *Grid) Update(rule Rule) {
 	for x := 0; x < g.Width; x++ {
 		for y := 0; y < g.Height; y++ {
-			newCell := rule(x, y, g)
-			g.Set(x, y, newCell)
+			g.Set(x, y, rule(x, y, g))
 		}
 	}
 	copy(g.left, g.right)
@@ -113,7 +116,14 @@ func newGrid(w, h int) [][]Cell {
 }
 
 func NewGrid(width, height int, seed GridSeeder) Grid {
+	prodConfig := zap.NewProductionConfig()
+	prodConfig.Encoding = "console"
+	prodConfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	prodConfig.EncoderConfig.EncodeDuration = zapcore.StringDurationEncoder
+	prodConfig.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel)
+	logger, _ := prodConfig.Build()
 	var g Grid
+	g.Logger = logger
 	g.Width = width
 	g.Height = height
 
